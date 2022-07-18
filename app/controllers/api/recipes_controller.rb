@@ -24,7 +24,7 @@ class Api::RecipesController < Api::BaseController
   end
 
   def show
-    @recipe = Recipe.find_by(id: params[:id])
+    @recipe = Recipe.includes(:ingredients, ratings: :rated_by).find_by(id: params[:id])
     @error_message = true if @recipe.blank?
   end
 
@@ -44,16 +44,7 @@ class Api::RecipesController < Api::BaseController
   end
 
   def index
-    request = {}
-
-    request.merge!('title' => params.dig(:recipes, :title))
-    request.merge!('descriptions' => params.dig(:recipes, :descriptions))
-    request.merge!('time' => params.dig(:recipes, :time))
-    request.merge!('difficulty' => params.dig(:recipes, :difficulty))
-    request.merge!('category_id' => params.dig(:recipes, :category_id))
-    request.merge!('user_id' => params.dig(:recipes, :user_id))
-
-    @recipes = Recipe.all
+    @pagy, @recipes = pagy(Recipe.includes(:ingredients).all)
   end
 
   def filter

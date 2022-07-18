@@ -1,4 +1,5 @@
 if @ingredients.present?
+  json.pagination @pagy
   json.ingredients @ingredients do |ingredient|
     json.id ingredient.id
     json.created_at ingredient.created_at

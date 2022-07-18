@@ -1,4 +1,5 @@
 if @categories.present?
+  json.pagination @pagy
   json.categories @categories do |category|
     json.id category.id
     json.created_at category.created_at
@@ -26,7 +27,6 @@ if @categories.present?
     end
 
     json.description category.description
-    json.category_id category.category_id
   end
 else
   json.error_message @error_message
