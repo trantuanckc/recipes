@@ -1,4 +1,5 @@
 class Recipe < ApplicationRecord
+  searchkick
   include ConstantValidatable
 
   # jitera-anchor-dont-touch: relations
@@ -28,7 +29,15 @@ class Recipe < ApplicationRecord
   accepts_nested_attributes_for :ingredients
 
   def self.associations
-    [:ingredients]
+    %i[ingredients]
+  end
+
+  def search_data
+    {
+      title: title,
+      difficulty: difficulty,
+      time: time.to_i
+    }
   end
 
   # jitera-anchor-dont-touch: reset_password
