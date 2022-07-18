@@ -36,6 +36,11 @@ class User < ApplicationRecord
     raw
   end
 
+  def self.authenticate(email, password)
+    user = User.find_for_authentication(email: email)
+    user&.valid_password?(password) ? user : nil
+  end
+
   class << self
     def timeout_in
       0.hours

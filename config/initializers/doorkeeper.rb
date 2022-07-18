@@ -14,9 +14,11 @@ Doorkeeper.configure do
     #   User.find_by(id: session[:user_id]) || redirect_to(new_user_session_url)
   end
 
-  # resource_owner_from_credentials do |_routes|
-  # User.authenticate(params[:email], params[:password])
-  # end
+  grant_flows %w[password]
+
+  resource_owner_from_credentials do |_routes|
+    User.authenticate(params[:email], params[:password])
+  end
 
   # If you didn't skip applications controller from Doorkeeper routes in your application routes.rb
   # file then you need to declare this block in order to restrict access to the web interface for
@@ -84,7 +86,7 @@ Doorkeeper.configure do
   # want to use API mode that will skip all the views management and change the way how
   # Doorkeeper responds to a requests.
   #
-  # api_only
+  api_only
 
   # Enforce token request content type to application/x-www-form-urlencoded.
   # It is not enabled by default to not break prior versions of the gem.
@@ -220,7 +222,7 @@ Doorkeeper.configure do
   # `grant_type` - the grant type of the request (see Doorkeeper::OAuth)
   # `scopes` - the requested scopes (see Doorkeeper::OAuth::Scopes)
   #
-  # use_refresh_token
+  use_refresh_token
 
   # Provide support for an owner to be assigned to each registered application (disabled by default)
   # Optional parameter confirmation: true (default: false) if you want to enforce ownership of

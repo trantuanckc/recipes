@@ -43,6 +43,13 @@ gem 'importmap-rails', '~> 1.0'
 gem 'nokogiri', '1.12.5'
 gem 'rspec'
 
+gem 'elasticsearch', '~> 8.3'
+gem 'searchkick', '~> 5.0', '>= 5.0.4'
+gem 'simple_command'
+
+# 🏆 The Best Pagination Ruby Gem 🥇
+gem 'pagy', '~> 5.10'
+
 group :production, :staging do
 end
 

@@ -7,3 +7,4 @@ en:
   errors:
     unauthorized_error: Unauthorized
     record_not_uniq_error: Record not uniq
+    parameter_missing_error: 'Missing parameters'

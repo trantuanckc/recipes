@@ -1,7 +1,7 @@
 class Api::RecipesController < Api::BaseController
   # jitera-anchor-dont-touch: before_action_filter
-  before_action :doorkeeper_authorize!, only: %w[index show update destroy]
-  before_action :current_user_authenticate, only: %w[index show update destroy]
+  before_action :doorkeeper_authorize!, only: %w[index show update destroy filter]
+  before_action :current_user_authenticate, only: %w[index show update destroy filter]
 
   # jitera-anchor-dont-touch: actions
   def destroy
@@ -54,5 +54,15 @@ class Api::RecipesController < Api::BaseController
     request.merge!('user_id' => params.dig(:recipes, :user_id))
 
     @recipes = Recipe.all
+  end
+
+  def filter
+    command = Recipes::Filter.call(params)
+
+    return @error_message = command.errors unless command.success?
+
+    results = command.result
+    @recipes = results[:recipes]
+    @pagy = results[:pagy]
   end
 end
