@@ -18,4 +18,8 @@ class RecipePolicy < ApplicationPolicy
   def delete?
     true
   end
+
+  def rates?
+    true
+  end
 end

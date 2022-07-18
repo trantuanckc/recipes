@@ -11,6 +11,8 @@ class User < ApplicationRecord
 
   has_many :ingredients, through: :recipes
 
+  has_many :ratings, foreign_key: 'rated_by', dependent: :destroy, inverse_of: :user
+
   # jitera-anchor-dont-touch: enum
 
   # jitera-anchor-dont-touch: file

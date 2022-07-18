@@ -41,8 +41,11 @@ resources :categories, only: [:index, :create, :show, :update, :destroy] do
 
     resources :recipes, only: [:index, :create, :show, :update, :destroy] do
       get 'filter', on: :collection
+      get 'rates', on: :member
     end
 
+    resources :rates, only: [:create] do
+    end
   end
 
   # jitera-anchor-dont-touch: webhooks
