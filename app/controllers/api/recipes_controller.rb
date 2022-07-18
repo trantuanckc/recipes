@@ -65,4 +65,8 @@ class Api::RecipesController < Api::BaseController
     @recipes = results[:recipes]
     @pagy = results[:pagy]
   end
+
+  def rates
+    @pagy, @ratings = pagy(Rating.includes(:rated_by).where(recipe_id: params[:id]))
+  end
 end
