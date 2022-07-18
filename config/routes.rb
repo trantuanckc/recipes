@@ -19,6 +19,7 @@ use_doorkeeper
   get '/health' => 'pages#health_check'
 
   namespace :api do
+    post '/converts', to: 'converts#index'
 put '/users_passwords', to: 'users_passwords#put_users_passwords'
 resources :users_registrations, only: [:create] do
  end
