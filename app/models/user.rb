@@ -11,6 +11,8 @@ class User < ApplicationRecord
 
   has_many :ingredients, through: :recipes
 
+  has_many :ratings, foreign_key: 'rated_by', dependent: :destroy, inverse_of: :user
+
   # jitera-anchor-dont-touch: enum
 
   # jitera-anchor-dont-touch: file
@@ -34,6 +36,11 @@ class User < ApplicationRecord
     self.reset_password_sent_at = Time.now.utc
     save(validate: false)
     raw
+  end
+
+  def self.authenticate(email, password)
+    user = User.find_for_authentication(email: email)
+    user&.valid_password?(password) ? user : nil
   end
 
   class << self

@@ -7,3 +7,5 @@ en:
   errors:
     unauthorized_error: Unauthorized
     record_not_uniq_error: Record not uniq
+    parameter_missing_error: 'Missing parameters'
+    cannot_rate_your_own: 'You cannot rate your recipe'

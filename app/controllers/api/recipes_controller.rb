@@ -1,7 +1,7 @@
 class Api::RecipesController < Api::BaseController
   # jitera-anchor-dont-touch: before_action_filter
-  before_action :doorkeeper_authorize!, only: %w[index show update destroy]
-  before_action :current_user_authenticate, only: %w[index show update destroy]
+  before_action :doorkeeper_authorize!, only: %w[index show update destroy filter]
+  before_action :current_user_authenticate, only: %w[index show update destroy filter]
 
   # jitera-anchor-dont-touch: actions
   def destroy
@@ -24,7 +24,7 @@ class Api::RecipesController < Api::BaseController
   end
 
   def show
-    @recipe = Recipe.find_by(id: params[:id])
+    @recipe = Recipe.includes(:ingredients, ratings: :rated_by).find_by(id: params[:id])
     @error_message = true if @recipe.blank?
   end
 
@@ -44,15 +44,20 @@ class Api::RecipesController < Api::BaseController
   end
 
   def index
-    request = {}
+    @pagy, @recipes = pagy(Recipe.includes(:ingredients).all)
+  end
 
-    request.merge!('title' => params.dig(:recipes, :title))
-    request.merge!('descriptions' => params.dig(:recipes, :descriptions))
-    request.merge!('time' => params.dig(:recipes, :time))
-    request.merge!('difficulty' => params.dig(:recipes, :difficulty))
-    request.merge!('category_id' => params.dig(:recipes, :category_id))
-    request.merge!('user_id' => params.dig(:recipes, :user_id))
+  def filter
+    command = Recipes::Filter.call(params)
 
-    @recipes = Recipe.all
+    return @error_message = command.errors unless command.success?
+
+    results = command.result
+    @recipes = results[:recipes]
+    @pagy = results[:pagy]
+  end
+
+  def rates
+    @pagy, @ratings = pagy(Rating.includes(:rated_by).where(recipe_id: params[:id]))
   end
 end

@@ -2,7 +2,8 @@ module Api
   class BaseController < ActionController::API
     include OauthTokensConcern
     include ActionController::Cookies
-    include Pundit
+    include Pundit::Authorization
+    include Pagy::Backend
 
     # =======End include module======
 
@@ -11,6 +12,7 @@ module Api
     rescue_from Exceptions::AuthenticationError, with: :base_render_authentication_error
     rescue_from ActiveRecord::RecordNotUnique, with: :base_render_record_not_unique
     rescue_from Pundit::NotAuthorizedError, with: :base_render_unauthorized_error
+    rescue_from ActionController::ParameterMissing, with: :base_render_parameter_missing_error
 
     def serialize(resource, option = {})
       ActiveModelSerializers::SerializableResource.new(
@@ -49,6 +51,10 @@ module Api
 
     def base_render_record_not_unique
       render json: { message: I18n.t('errors.record_not_uniq_error') }, status: :forbidden
+    end
+
+    def base_render_parameter_missing_error
+      render json: { message: I18n.t('errors.parameter_missing_error') }, status: :forbidden
     end
   end
 end

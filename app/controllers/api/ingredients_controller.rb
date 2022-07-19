@@ -37,12 +37,6 @@ class Api::IngredientsController < Api::BaseController
   end
 
   def index
-    request = {}
-
-    request.merge!('unit' => params.dig(:ingredients, :unit))
-    request.merge!('amount' => params.dig(:ingredients, :amount))
-    request.merge!('recipe_id' => params.dig(:ingredients, :recipe_id))
-
-    @ingredients = Ingredient.all
+    @pagy, @ingredients = pagy(Ingredient.all)
   end
 end

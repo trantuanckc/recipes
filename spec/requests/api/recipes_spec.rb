@@ -67,7 +67,7 @@ RSpec.describe 'api/recipes', type: :request do
 
         let(:resource_owner) { create(:user) }
         let(:token) { create(:access_token, resource_owner: resource_owner).token }
-        let(:Authorization) { "Bearer #{token}" }
+        let(:Authorization) { "Bearer #{token}" } # rubocop:disable RSpec/VariableName
         let(:params) {}
         let(:id) { create(:recipe).id }
 
@@ -173,7 +173,7 @@ RSpec.describe 'api/recipes', type: :request do
 
         let(:resource_owner) { create(:user) }
         let(:token) { create(:access_token, resource_owner: resource_owner).token }
-        let(:Authorization) { "Bearer #{token}" }
+        let(:Authorization) { "Bearer #{token}" } # rubocop:disable RSpec/VariableName
         let(:id) { create(:recipe).id }
 
         let(:params) {}
@@ -244,7 +244,7 @@ RSpec.describe 'api/recipes', type: :request do
 
         let(:resource_owner) { create(:user) }
         let(:token) { create(:access_token, resource_owner: resource_owner).token }
-        let(:Authorization) { "Bearer #{token}" }
+        let(:Authorization) { "Bearer #{token}" } # rubocop:disable RSpec/VariableName
         let(:params) {}
         let(:id) { create(:recipe).id }
 
@@ -460,7 +460,46 @@ RSpec.describe 'api/recipes', type: :request do
 
         let(:resource_owner) { create(:user) }
         let(:token) { create(:access_token, resource_owner: resource_owner).token }
-        let(:Authorization) { "Bearer #{token}" }
+        let(:Authorization) { "Bearer #{token}" } # rubocop:disable RSpec/VariableName
+        let(:params) {}
+        run_test! do |response|
+          expect(response.status).to eq(200)
+        end
+      end
+    end
+  end
+
+  path '/api/recipes/{id}/rates' do
+    get "List recipe's rates" do
+      tags 'filter'
+      consumes 'application/json'
+      security [bearerAuth: []]
+      parameter name: 'id', in: :path, type: 'string', description: 'id'
+      parameter name: :params, in: :body, schema: {
+        type: :object,
+        properties: {
+        }
+      }
+      response '200', 'filter' do
+        examples 'application/json' => {
+          'pagination' => 'integer',
+
+          'ratings' =>
+          [
+            'id' => 'integer',
+            'rated_by' => {
+              'email' => 'string'
+            },
+            'recipe_id' => 'string',
+            'content' => 'string',
+            'point' => 'number'
+          ],
+          'error_message' => 'string'
+        }
+
+        let(:resource_owner) { create(:user) }
+        let(:token) { create(:access_token, resource_owner: resource_owner).token }
+        let(:Authorization) { "Bearer #{token}" } # rubocop:disable RSpec/VariableName
         let(:params) {}
         run_test! do |response|
           expect(response.status).to eq(200)
