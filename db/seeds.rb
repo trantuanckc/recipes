@@ -13,7 +13,7 @@ total_categories = 0
 if Category.count.zero?
   p 'Creating categories'
 
-  values = TOTAL_CATEGORIES.times.map do
+  values = 1000.times.map do
     "('#{Faker::Name.name.gsub(/'/, '')}', '2022/#{(1..12).to_a.sample}/19', '2022/#{(1..12).to_a.sample}/19')"
   end
 
@@ -74,3 +74,4 @@ end
 p 'Creating app for Doorkeeper'
 Doorkeeper::Application.create(name: 'Backend', redirect_uri: '', scopes: '') if Doorkeeper::Application.count.zero?
 p Doorkeeper::Application.first
+p User.first
