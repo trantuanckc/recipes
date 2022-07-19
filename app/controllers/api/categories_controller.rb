@@ -33,9 +33,6 @@ class Api::CategoriesController < Api::BaseController
   end
 
   def index
-    request = {}
-    request.merge!('description' => params.dig(:categories, :description))
-
-    @categories = Category.all
+    @pagy, @categories = pagy(Category.all)
   end
 end

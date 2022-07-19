@@ -50,3 +50,5 @@ db/mysql/**/*
 
 # Ignore Rails credential keys
 /config/credentials/*
+env
+swagger/
