@@ -18,7 +18,7 @@ class Api::CategoriesController < Api::BaseController
   end
 
   def show
-    @category = Category.includes(:ingredients).find_by(id: params[:id])
+    @category = Category.find_by(id: params[:id])
     @error_message = true if @category.blank?
   end
 
@@ -33,6 +33,6 @@ class Api::CategoriesController < Api::BaseController
   end
 
   def index
-    @pagy, @categories = pagy(Category.includes(:ingredients).all)
+    @pagy, @categories = pagy(Category.all)
   end
 end
