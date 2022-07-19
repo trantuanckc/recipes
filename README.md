@@ -39,6 +39,7 @@ What I did do for the question 1?
 - [x] Update Rspec - (simple case)
 - [x] Update doorkeeper & POSTMAN API
 - [x] Testing with large data (1 milion records)
+<img width="883" alt="image" src="https://user-images.githubusercontent.com/4193786/179827060-fe67571b-2459-419e-a0f3-8537ef037114.png">
 
 ---
 
